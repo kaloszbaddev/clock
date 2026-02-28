@@ -40,37 +40,48 @@ void DrawClockMarks(Vector2 center) {
 	}
 }
 
-void DrawSecHand(Vector2 center, i32 t) {
+void DrawSecHand(Vector2 center, Vector2 *last, i32 t) {
 	Vector2 end;
 	end.x = center.x + cosf(MINSEC_ANGLE(t) - 90.0f*DEG2RAD) * SEC_HAND_LEN; 
 	end.y = center.y + sinf(MINSEC_ANGLE(t) - 90.0f*DEG2RAD) * SEC_HAND_LEN; 
 
-	DrawLineEx(center, end, SEC_HAND_THICK, RED);
+	*last = Vector2Lerp(*last, end, 0.2f);
+
+	DrawLineEx(center, *last, SEC_HAND_THICK, RED);
 }
 
-void DrawMinHand(Vector2 center, i32 t) {
+void DrawMinHand(Vector2 center, Vector2 *last, i32 t) {
 	Vector2 end;
 	end.x = center.x + cosf(MINSEC_ANGLE(t) - 90.0f*DEG2RAD) * MIN_HAND_LEN; 
 	end.y = center.y + sinf(MINSEC_ANGLE(t) - 90.0f*DEG2RAD) * MIN_HAND_LEN; 
 
-	DrawLineEx(center, end, MIN_HAND_THICK, DARKGRAY);
+	*last = Vector2Lerp(*last, end, 0.2f);
+
+	DrawLineEx(center, *last, MIN_HAND_THICK, DARKGRAY);
 }
 
-void DrawHourHand(Vector2 center, i32 t) {
+void DrawHourHand(Vector2 center, Vector2 *last, i32 t) {
 	Vector2 end;
 	end.x = center.x + cosf(HOUR_ANGLE(t) - 90.0f*DEG2RAD) * HOUR_HAND_LEN; 
 	end.y = center.y + sinf(HOUR_ANGLE(t) - 90.0f*DEG2RAD) * HOUR_HAND_LEN; 
 
-	DrawLineEx(center, end, HOUR_HAND_THICK, BLACK);
+	*last = Vector2Lerp(*last, end, 0.2f);
+
+	DrawLineEx(center, *last, HOUR_HAND_THICK, BLACK);
 }
 
 i32 main(void) {
 	InitWindow(WIDTH, HEIGHT, "Clock");	
+	SetTargetFPS(60);
 
 	Vector2 center = (Vector2) {
 		(float) WIDTH  / 2.0f,
 		(float) HEIGHT / 2.0f
 	};
+
+	Vector2 sec_hand_last = {0};
+	Vector2 min_hand_last = {0};
+	Vector2 hour_hand_last = {0};
 
 	while (!WindowShouldClose()) {
 		time_t now = time(NULL);
@@ -80,9 +91,9 @@ i32 main(void) {
 			ClearBackground(DARKBLUE);
 			DrawCircleV(center, RADIUS, RAYWHITE);	
 			DrawClockMarks(center);
-			DrawSecHand(center, t->tm_sec);
-			DrawMinHand(center, t->tm_min);	
-			DrawHourHand(center, t->tm_hour);
+			DrawSecHand(center, &sec_hand_last, t->tm_sec);
+			DrawMinHand(center, &min_hand_last, t->tm_min);	
+			DrawHourHand(center, &hour_hand_last, t->tm_hour);
 		EndDrawing();
 	}
 
