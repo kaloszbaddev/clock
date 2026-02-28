@@ -64,7 +64,7 @@ void DrawHourHand(Vector2 center, i32 t) {
 	DrawLineEx(center, end, HOUR_HAND_THICK, BLACK);
 }
 
-int main(void) {
+i32 main(void) {
 	InitWindow(WIDTH, HEIGHT, "Clock");	
 
 	Vector2 center = (Vector2) {
