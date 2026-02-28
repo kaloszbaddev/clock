@@ -25,7 +25,7 @@ typedef signed int i32;
 #define HOUR_ANGLE(n) 2. * PI / 12. * (n)
 
 void DrawClockMarks(Vector2 center) {
-	for (int i=0; i<60; ++i) {
+	for (i32 i=0; i<60; ++i) {
 		float radius = (i % 5 == 0) ? RADIUS*0.9 : RADIUS*0.95;
 	
 		Vector2 start;
