@@ -94,6 +94,7 @@ i32 main(void) {
 			DrawSecHand(center, &sec_hand_last, t->tm_sec);
 			DrawMinHand(center, &min_hand_last, t->tm_min);	
 			DrawHourHand(center, &hour_hand_last, t->tm_hour);
+			DrawCircleV(center, 8.0f, BLACK);
 		EndDrawing();
 	}
 
